@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.zblappmongo.persistentVolume.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.zblappmongo.persistentVolume.storage }}
+  storageClassName: {{ .Values.zblappmongo.persistentVolume.storageclassname }}

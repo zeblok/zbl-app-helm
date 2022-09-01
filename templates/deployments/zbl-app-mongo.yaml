@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.zblappmongo.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.zblappmongo.labels }}
+spec:
+  {{- if not .Values.zblappmongo.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app: {{ .Values.zblappmongo.labels }}
+  template:
+    metadata:
+      name: {{ .Values.zblappmongo.podAnnotations }}
+      labels:
+        app: {{ .Values.zblappmongo.labels }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      hostname: {{ .Values.zblappmongo.hostname }}
+      containers:
+        - name: {{ .Values.zblappmongo.cname }}
+          image: "{{ .Values.zblappmongo.image.repository }}:{{ .Values.zblappmongo.image.tag }}"
+          imagePullPolicy: Always
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: "ROOT"
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              value: "ROOT"
+            - name: MONGO_INITDB_DATABASE
+              value: "abc"
+          volumeMounts:
+            - mountPath: {{ .Values.zblappmongo.mountPath}}
+              name: {{ .Values.zblappmongo.namemountPath}}
+          ports:
+            - containerPort: {{ .Values.zblappmongo.cport }}
+      restartPolicy: Always
+      volumes:
+        - name: {{ .Values.zblappmongo.namevolumes}}
+          persistentVolumeClaim:
+            claimName: {{ .Values.zblappmongo.persistentVolumeClaimname}}

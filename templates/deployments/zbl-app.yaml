@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zbl-application-server
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: zbl-application-server
+spec:
+  {{- if not .Values.zblapp.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app: zbl-application-server
+  template:
+    metadata:
+      name: {{ .Values.zblapp.podAnnotations }}
+      labels:
+        app: zbl-application-server
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      hostname: zbl-application-server
+      containers:
+        - name: zbl-application-container
+          image: "{{ .Values.zblapp.image.repository }}:{{ .Values.zblapp.image.tag }}"
+          imagePullPolicy: Always
+          env:
+            - name: MONGO_URI
+              value: {{ .Values.mongoUrl }}
+            - name: computationalUrl
+              value: {{ .Values.computationalUrl }}
+            - name: backendUrl
+              value: {{ .Values.backendUrl }}
+            - name: SEED_DATA
+              value: 'seed'
+            - name: REDIS_URL
+              value: redis-lb-service.zbl
+            - name: REDIS_PORT
+              value: '80'
+            #- name: STORAGE_CLASS
+            # value: gp2
+            - name: REDIS_STATUS
+              value: active
+            - name: doCron
+              value: 'NO'
+            - name: DEPLOYMENT_ENV
+              value: {{ .Values.DEPLOYMENT_ENV }}
+            - name: datalakeUrl
+              value: {{ .Values.datalakerUrl }}
+            - name: bugsnagKey
+              value: {{ .Values.bugsnagKey }}
+            - name: dataLakeAuthToken
+              value: {{ .Values.dataLakeAuthToken }}
+            - name: rabbitUrl
+              value: amqp://rabbitmq-lb-service.zbl:80
+      imagePullSecrets:
+      - name: {{ .Values.privateaccesssecret.name }}

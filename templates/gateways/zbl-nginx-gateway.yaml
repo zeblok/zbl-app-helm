@@ -1,0 +1,26 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: {{ .Values.Gateway.nginx.name }}
+  namespace: {{ .Values.namespaceRM }}
+spec:
+  selector:
+    istio: ingressgateway # use Istio default gateway implementation
+  servers:
+  - port:
+      number: {{ .Values.Virtualservices.nginx.port }}
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*.{{ .Values.domain }}"
+    tls:
+      httpsRedirect: {{ .Values.Gateway.nginx.httpsRedirect }}
+  - port:
+      number: {{ .Values.Gateway.nginx.port }}
+      name: https
+      protocol: HTTPS
+    tls:
+      mode: {{ .Values.Gateway.nginx.mode }}
+      credentialName: {{ .Values.Gateway.nginx.credentialName }}
+    hosts:
+    - "*.{{ .Values.domain }}"

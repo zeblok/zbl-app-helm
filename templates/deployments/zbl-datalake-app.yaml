@@ -1,0 +1,40 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: zbl-datalake-server
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: zbl-datalake-server
+spec:
+  {{- if not .Values.zbldatalake.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app: zbl-datalake-server
+  template:
+    metadata:
+      name: {{ .Values.zbldatalake.podAnnotations }}
+      labels:
+        app: zbl-datalake-server
+    spec:
+      hostname: zbl-datalake-server
+      containers:
+      - name: zbl-datalake-container
+        image: "{{ .Values.zbldatalake.image.repository }}:{{ .Values.zbldatalake.image.tag }}"
+        {{- with .Values.imagePullSecrets }}
+        imagePullSecrets:
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+        env:
+        - name: MINIO_ROOT_USER
+          value: {{ .Values.zbldatalake.miniorootuser }}
+        - name: MINIO_ROOT_PASSWORD
+          value: {{ .Values.zbldatalake.miniorootpassword }}
+        volumeMounts:
+        - mountPath: {{ .Values.zbldatalake.mountPath }}
+          name: zbl-datalake-server
+      volumes:
+      - name: zbl-datalake-server
+        persistentVolumeClaim:
+          claimName: zbl-datalake-server

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.zblappauth.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.zblappauth.labels }}
+spec:
+  {{- if not .Values.zblappmongo.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app: {{ .Values.zblappauth.labels }}
+  template:
+    metadata:
+      name: {{ .Values.zblappauth.podAnnotations }}
+      labels:
+        app: {{ .Values.zblappauth.labels }}
+    spec:
+      hostname: {{ .Values.zblappauth.hostname }}
+      containers:
+        - name: {{ .Values.zblappauth.cname }}
+          image: "{{ .Values.zblappauth.image.repository }}:{{ .Values.zblappauth.image.tag }}"
+          imagePullPolicy: Always
+          env:
+            - name: MONGO_URI
+              value: {{ .Values.mongoUrl }}
+            - name: computationalUrl
+              value: {{ .Values.computationalUrl }}
+            - name: backendUrl
+              value: {{ .Values.backendUrl }}
+            - name: bugsnagKey
+              value: {{ .Values.bugsnagKey }}
+      imagePullSecrets:
+      - name: {{ .Values.privateaccesssecret.name }}

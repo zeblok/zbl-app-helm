@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  zbl-app:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2022-09-02T01:51:58.0889853+05:30"
+    description: A Helm chart for Zbl-App
+    digest: 5be0af69c0df3fa440729f46d4089c7fdc3fab451b30716818a24705c16debc5
+    name: zbl-app
+    type: application
+    urls:
+    - zbl-app-1.2.0.tgz
+    version: 1.2.0
+generated: "2022-09-02T01:51:58.0874198+05:30"

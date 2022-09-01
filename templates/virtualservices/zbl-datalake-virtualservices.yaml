@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ .Values.Virtualservices.datalake.name }}
+  namespace: {{ .Values.namespaceRM }}
+spec:
+  hosts:
+  - "{{ .Values.Virtualservices.datalake.subdomain }}.{{ .Values.domain }}"
+  gateways:
+  - {{ .Values.Virtualservices.nginx.name }}
+  http:
+  - match:
+    - uri:
+        prefix: "/"
+    route:
+    - destination:
+        port:
+          number: {{ .Values.Virtualservices.datalake.port }}
+        host: {{ .Values.Virtualservices.datalake.host }}

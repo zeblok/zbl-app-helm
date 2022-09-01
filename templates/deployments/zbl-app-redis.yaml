@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.zblappredis.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.zblappredis.labels }}
+spec:
+  {{- if not .Values.zblappredis.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app: {{ .Values.zblappredis.labels }}
+  template:
+    metadata:
+      name: {{ .Values.zblappredis.podAnnotations }}
+      labels:
+        app: {{ .Values.zblappredis.labels }}
+    spec:
+      {{- with .Values.zblappredis.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      hostname: {{ .Values.zblappredis.hostname }}
+      containers:
+        - name: {{ .Values.zblappredis.cname }}
+          image: "{{ .Values.zblappredis.image.repository }}:{{ .Values.zblappredis.image.tag }}"
+          imagePullPolicy: Always
+         

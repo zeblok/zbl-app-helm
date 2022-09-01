@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.zblkubeconfig.name }}
+  namespace: {{ .Values.namespaceM }}
+spec:
+  {{- if not .Values.zblkubeconfig.enabled }}
+  replicas: {{ .Values.zblkubeconfig.replicaCount }}
+  {{- end }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.zblkubeconfig.labels }}
+        version: {{ .Values.zblkubeconfig.version }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ .Values.zblkubeconfig.serviceAccountName }}
+      containers:
+        - name: {{ .Values.zblkubeconfig.cname }}
+          image: "{{ .Values.zblkubeconfig.image.repository }}:{{ .Values.zblkubeconfig.image.tag }}"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: AWS_ACCESS_KEY_ID
+              value: {{ .Values.AWS_ACCESS_KEY_ID }}
+            - name: AWS_SECRET_ACCESS_KEY
+              value: {{ .Values.AWS_SECRET_ACCESS_KEY }}
+            - name: AWS_DEFAULT_REGION
+              value: {{ .Values.AWS_DEFAULT_REGION }}
+          args:
+            - -conf=/data/config.yaml
+          volumeMounts:
+            - mountPath: {{ .Values.zblkubeconfig.mountPath}}
+              name: {{ .Values.zblkubeconfig.namemountPath}}
+      volumes:
+        - name: {{ .Values.zblkubeconfig.namevolumes}}
+          configMap:
+            name: {{ .Values.zblkubeconfig.configMap}}
+  selector:
+    matchLabels:
+      app: {{ .Values.zblkubeconfig.labels }}
+      version: {{ .Values.zblkubeconfig.version }}

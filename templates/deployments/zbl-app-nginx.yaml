@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.zblappnginx.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.zblappnginx.labels }}
+spec:
+  {{- if not .Values.zblappnginx.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app: {{ .Values.zblappnginx.labels }}
+  template:
+    metadata:
+      name: {{ .Values.zblappnginx.podAnnotations }}
+      labels:
+        app: {{ .Values.zblappnginx.labels }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      hostname: {{ .Values.zblappnginx.hostname }}
+      containers:
+        - name: {{ .Values.zblappnginx.cname }}
+          image: "{{ .Values.zblappnginx.image.repository }}:{{ .Values.zblappnginx.image.tag }}"
+          imagePullPolicy: Always
+      imagePullSecrets:
+      - name: {{ .Values.zblappauth.imagePullSecrets }}

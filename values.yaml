@@ -1,0 +1,402 @@
+# Default values for mychart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+computationalUrl: http://app.jpmc.zeblok.com
+
+backendUrl: http://app.jpmc.zeblok.com
+
+datalakerUrl: http://datalake.jpmc.zeblok.com
+
+domain: jpmc.zeblok.com
+
+mongoUrl: mongodb://ROOT:ROOT@zbl-mongo-service.zbl:80/zbl-computational?authSource=admin
+
+bugsnagKey: 565a7c89a3803fd27a227a2de3dc2ca5
+
+dataLakeAuthToken: 3030404a96ef04ef2b6e9c6f0e50749628d572623bbccfd1e159ae91a94cfd5f
+
+DEPLOYMENT_ENV: jpmc
+
+endpoint: http://app.jpmc.zeblok.com/api/v1/system
+
+AWS_ACCESS_KEY_ID: AKIA4UXXB7CSQS33MZEH
+AWS_SECRET_ACCESS_KEY: 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
+AWS_DEFAULT_REGION: us-east-1
+
+namespace: zbl
+namespaceRM: routemanager
+namespaceM: monitoring
+namespaceJ: jpmc 
+replicaCount: 1
+
+#storageclass (provisioner for cinder -> cinder.csi.openstack.org for aws -> kubernetes.io/aws-ebs for azure -> kubernetes.io/azure-disk )
+#storageclass:
+#  name: csi-sc-cinderplugin    
+#  provisioner: cinder.csi.openstack.org
+#  poll: []
+#  fstype: [] # ext4 for aws
+#  type: []  #gp2 for aws
+#  kind: []  #managed for azure 
+  
+#zbl-app
+zblapp:
+  enabled: true
+
+  useClusterRole: true
+
+  useExistingRole: false
+  #zblapp replicas 
+  replicaCount: 1
+
+  podAnnotations : zbl-application-server-pod
+  #conatiner Name 
+  name: zbl-application-container
+  #Pod container Image 
+  image:
+    repository: zeblok/comp-app-jpmc
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: v1.2.0_prod_minikube
+
+  imagePullSecrets: []
+  nameOverride: ""
+  fullnameOverride: ""
+
+  persistentVolume:
+    ## If true, zbl will create/use a Persistent Volume Claim
+    ## If false, use emptyDir
+    ##
+    enabled: true
+  servicename: zbl-application-service
+  
+  #Zbl app Service File Ports and TargetPorts
+  port: 80
+  targetport: 3000
+
+#zbl-app-mongo
+zblappmongo:
+  enabled: true
+
+  useClusterRole: true
+
+  useExistingRole: false
+  #zblapp replicas 
+  replicaCount: 1
+  #name
+  name: mongo-server
+  #lables
+  labels: mongo-server
+
+  podAnnotations : mongo-server-pod
+
+  hostname: mongo-server
+  cname: mongo-container
+  
+  image:
+    repository: mongo
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: 4.2-rc
+  
+  imagePullSecrets: []
+  nameOverride: ""
+  fullnameOverride: ""
+  
+  mountPath: /data/db
+  namemountPath: mongo-server
+  cport: 27017
+  namevolumes: mongo-server
+  persistentVolume:
+    ## If true, zbl will create/use a Persistent Volume Claim
+    ## If false, use emptyDir
+    ##
+    enabled: true
+    name: mongo-server
+    storage: 5Gi
+    storageclassname: standard
+  persistentVolumeClaimname: mongo-server
+  servicename: zbl-mongo-service
+  port: 80
+  targetport: 27017
+
+#zbl-app-auth
+zblappauth:
+  enabled: true
+
+  useClusterRole: true
+
+  useExistingRole: false
+  #zblapp replicas 
+  replicaCount: 1
+  #name
+  name: zbl-auth-server
+  #lables
+  labels: zbl-auth-server
+
+  podAnnotations : zbl-auth-server-pod
+
+  hostname: zbl-auth-server
+  cname: zbl-auth-container
+  
+  image:
+    repository: zeblok/comp-auth
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: v1.2.0_prod_minikube
+  
+  imagePullSecrets: hubcred
+  nameOverride: ""
+  fullnameOverride: ""
+  sname: zbl-auth-service
+  port: 80
+  targetport: 5000
+
+#zbl-app-redis
+zblappredis:
+  enabled: true
+
+  useClusterRole: true
+
+  useExistingRole: false
+  #zblapp replicas 
+  replicaCount: 1
+  #name
+  name: redis-server
+  #lables
+  labels: redis-server
+
+  podAnnotations : zbl-auth-server-pod
+
+  hostname: zbl-auth-server
+  cname: zbl-auth-container
+  
+  image:
+    repository: redis
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: 7.0.4-alpine
+  
+  imagePullSecrets: []
+  nameOverride: ""
+  fullnameOverride: ""
+  sname: redis-lb-service
+  type: LoadBalancer
+  port: 80
+  targetport: 6379
+
+#zbl-app-rabbitmq
+zblapprabbitmq:
+  enabled: true
+
+  useClusterRole: true
+
+  useExistingRole: false
+  #zblapp replicas
+  replicaCount: 1
+  #name
+  name: rabbitmq-server
+  #lables
+  labels: rabbitmq-server
+
+  podAnnotations : rabbitmq-server-pod
+
+  hostname: rabbitmq-server
+  cname: rabbitmq-container
+
+  image:
+    repository: rabbitmq
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: 3.9.22-alpine
+
+  imagePullSecrets: []
+  nameOverride: ""
+  fullnameOverride: ""
+  sname: rabbitmq-lb-service
+  type: LoadBalancer
+  port: 80
+  targetport: 5672
+
+
+#zbl-pod-nginx
+zblappnginx:
+  enabled: true
+
+  useClusterRole: true
+
+  useExistingRole: false
+  #zblapp replicas 
+  replicaCount: 1
+  #name
+  name: zbl-nginx-server
+  #lables
+  labels: zbl-nginx-server
+
+  podAnnotations : zbl-nginx-server-pod
+
+  hostname: zbl-nginx-server
+  cname: zbl-nginx-container
+  
+  image:
+    repository: zeblok/nginx-zbl
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: alpine
+  
+  imagePullSecrets: hubcred
+  nameOverride: ""
+  fullnameOverride: ""
+  sname: zbl-internal-nginx-service
+  port: 80
+  targetport: 80
+
+# Private-access Secret file
+privateaccesssecret:
+  name: hubcred
+  dockerconfigjson: ewoJImF1dGhzIjogewoJCSJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOiB7CgkJCSJhdXRoIjogImVtVmliRzlyT2xwbFlteHZhekV5TXlFPSIKCQl9Cgl9LAoJIkh0dHBIZWFkZXJzIjogewoJCSJVc2VyLUFnZW50IjogIkRvY2tlci1DbGllbnQvMTguMDYuMi1jZSAobGludXgpIgoJfQp9
+
+privateharborsecret:
+  name: regcred
+  dockerconfigjson: eyJhdXRocyI6eyJodHRwOi8vaGFyYm9yLmpwbWMuemVibG9rLmNvbSI6eyJ1c2VybmFtZSI6ImFkbWluIiwicGFzc3dvcmQiOiJIYXJib3IxMjM0NSIsImF1dGgiOiJZV1J0YVc0NlNHRnlZbTl5TVRJek5EVT0ifX19
+#kube api setup roles zbl-roles (cluster role binding)
+zblroles:
+  name: adminapi
+  roleRef:
+    kind: ClusterRole
+    name: cluster-admin
+  subjects:
+    kind: ServiceAccount
+    name: adminapi
+    namespace: kube-system
+  ServiceAccount:
+    name: adminapi
+    namespace: kube-system
+    labels: Reconcile
+
+#kube events setup role zbl-kube-events-role (cluster role binding)
+zblkubeeventroles:
+  name: event-exporter
+  roleRef:
+    kind: ClusterRole
+    name: view
+  subjects:
+    kind: ServiceAccount
+    name: event-exporter
+  ServiceAccount:
+    name: event-exporter
+
+#zbl kube config 
+zblkubeconfig:
+  enabled: true
+
+  useClusterRole: true
+
+  useExistingRole: false
+  #zblapp replicas 
+  replicaCount: 1
+  #name
+  name: event-exporter
+  #lables
+  labels: event-exporter
+  version: v1
+
+  #namespace 
+  namespace: monitoring 
+  serviceaccountname: event-exporter
+  podAnnotations : event-exporter
+
+  hostname: event-exporter
+  cname: event-exporter
+  
+  image:
+    repository: ghcr.io/opsgenie/kubernetes-event-exporter
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: v0.10
+  
+  persistentVolume:
+    ## If true, zbl will create/use a Persistent Volume Claim
+    ## If false, use emptyDir
+    ##
+    enabled: true
+  mountPath: /data
+  namemountPath: cfg
+  namevolumes: cfg
+  configMap: event-exporter-cfg
+  endpoint: https://app.intel.zeblok.com/api/v1/system
+
+zbldatalake:
+  enabled: true
+
+  useClusterRole: true
+
+  useExistingRole: false
+  #zblapp replicas 
+  replicaCount: 1
+
+  podAnnotations : zbl-datalake-server-pod
+  #conatiner Name 
+  name: zbl-datalake-container
+  #Pod container Image 
+  image:
+    repository: zeblok/minio
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: v1.2.0_prod_minikube
+  miniorootuser: admin
+  miniorootpassword: 306cab3e-adc7-49a0-89fb-0735aa7ffd14
+  mountPath: /mnt
+  imagePullSecrets: []
+  nameOverride: ""
+  fullnameOverride: ""
+
+  persistentVolume:
+    ## If true, zbl will create/use a Persistent Volume Claim
+    ## If false, use emptyDir
+    ##
+    enabled: true
+    name: zbl-datalake-server
+    storage: 5Gi
+    storageclassname: standard
+  servicename: zbl-datalake-service
+  
+  #Zbl app Service File Ports and TargetPorts
+  port: 9000
+  targetport: 9000
+  portconsole: 9001
+  targetportconsole: 9001
+
+  datalakeauth:
+    name: zbl-datalake-auth
+    image:
+      repository: dockerhub.zeblok.io/testing/datalake-nodejs
+      pullPolicy: IfNotPresent
+      tag: v1.2.0_prod_minikube
+
+Virtualservices:
+  nginx:
+    name: http-gateway-zbl-app
+    subdomain: app
+    #gateways: http-gateway-zbl-app
+    port: 80
+    host: zbl-internal-nginx-service.zbl.svc.cluster.local
+  datalake:
+    name: http-gateway-zbl-datalake
+    subdomain: datalake
+    port: 9001
+    host: zbl-datalake-service.zbl.svc.cluster.local
+  harbor:
+    name: harbor
+    subdomain: harbor
+    port: 80
+    hostone: harbor-core.default.svc.cluster.local
+    hosttwo: harbor-portal.default.svc.cluster.local
+Gateway:
+  nginx:
+    name: http-gateway-zbl-app
+    subdomain: []
+    mode: SIMPLE
+    credentialName: zbl-finalssl
+    port: 443
+    httpsRedirect: false

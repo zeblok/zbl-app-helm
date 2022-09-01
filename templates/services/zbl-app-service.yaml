@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.zblapp.servicename }}
+  namespace: {{ .Values.namespace }}
+spec:
+  ports:
+    - port: {{ .Values.zblapp.port }}
+      targetPort: {{ .Values.zblapp.targetport }}
+      protocol: TCP
+      name: http
+  selector:
+    app: zbl-application-server

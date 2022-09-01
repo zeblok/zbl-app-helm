@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.zblkubeconfig.configMap }}
+  namespace: {{ .Values.namespaceM }}
+data:
+  config.yaml: |
+    logLevel: debug
+    logFormat: json
+    route:
+      routes:
+        - match:
+           - receiver: "webhook"
+           - receiver: "dump"
+    receivers:
+      - name: "webhook"
+        webhook:
+          endpoint: "{{ .Values.endpoint }}"
+        tls:
+          insecureSkipVerify: true
+      - name: "dump"
+        file:
+          path: "/tmp/abc"

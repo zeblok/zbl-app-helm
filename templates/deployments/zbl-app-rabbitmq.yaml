@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.zblapprabbitmq.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.zblapprabbitmq.labels }}
+spec:
+  {{- if not .Values.zblapprabbitmq.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app: {{ .Values.zblapprabbitmq.labels }}
+  template:
+    metadata:
+      name: {{ .Values.zblapprabbitmq.podAnnotations }}
+      labels:
+        app: {{ .Values.zblapprabbitmq.labels }}
+    spec:
+      {{- with .Values.zblapprabbitmq.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      hostname: {{ .Values.zblapprabbitmq.hostname }}
+      containers:
+        - name: {{ .Values.zblapprabbitmq.cname }}
+          image: "{{ .Values.zblapprabbitmq.image.repository }}:{{ .Values.zblapprabbitmq.image.tag }}"
+          imagePullPolicy: Always
+

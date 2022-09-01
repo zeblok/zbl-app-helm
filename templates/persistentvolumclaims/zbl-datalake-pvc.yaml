@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.zbldatalake.persistentVolume.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.zbldatalake.persistentVolume.storage }}
+  storageClassName: {{ .Values.zbldatalake.persistentVolume.storageclassname }}

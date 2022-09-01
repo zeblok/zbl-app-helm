@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.zblapprabbitmq.sname }}
+  namespace: {{ .Values.namespace }}
+spec:
+  #type: {{ .Values.zblapprabbitmq.type }}
+  ports:
+    - port: {{ .Values.zblapprabbitmq.port }}
+      targetPort: {{ .Values.zblapprabbitmq.targetport }}
+      name: foo
+  selector:
+    app: {{ .Values.zblapprabbitmq.labels }}
+
