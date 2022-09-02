@@ -56,5 +56,4 @@ spec:
               value: {{ .Values.dataLakeAuthToken }}
             - name: rabbitUrl
               value: amqp://rabbitmq-lb-service.zbl:80
-      imagePullSecrets:
-      - name: {{ .Values.privateaccesssecret.name }}
+   

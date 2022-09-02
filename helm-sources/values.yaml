@@ -20,9 +20,6 @@ DEPLOYMENT_ENV: jpmc
 
 endpoint: http://app.jpmc.zeblok.com/api/v1/system
 
-AWS_ACCESS_KEY_ID: AKIA4UXXB7CSQS33MZEH
-AWS_SECRET_ACCESS_KEY: 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
-AWS_DEFAULT_REGION: us-east-1
 
 namespace: zbl
 namespaceRM: routemanager
@@ -252,9 +249,6 @@ zblappnginx:
   targetport: 80
 
 # Private-access Secret file
-privateaccesssecret:
-  name: hubcred
-  dockerconfigjson: ewoJImF1dGhzIjogewoJCSJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOiB7CgkJCSJhdXRoIjogImVtVmliRzlyT2xwbFlteHZhekV5TXlFPSIKCQl9Cgl9LAoJIkh0dHBIZWFkZXJzIjogewoJCSJVc2VyLUFnZW50IjogIkRvY2tlci1DbGllbnQvMTguMDYuMi1jZSAobGludXgpIgoJfQp9
 
 privateharborsecret:
   name: regcred
@@ -324,7 +318,7 @@ zblkubeconfig:
   namemountPath: cfg
   namevolumes: cfg
   configMap: event-exporter-cfg
-  endpoint: https://app.intel.zeblok.com/api/v1/system
+  endpoint: https://app.jpmc.zeblok.com/api/v1/system
 
 zbldatalake:
   enabled: true

@@ -22,13 +22,6 @@ spec:
         - name: {{ .Values.zblkubeconfig.cname }}
           image: "{{ .Values.zblkubeconfig.image.repository }}:{{ .Values.zblkubeconfig.image.tag }}"
           imagePullPolicy: IfNotPresent
-          env:
-            - name: AWS_ACCESS_KEY_ID
-              value: {{ .Values.AWS_ACCESS_KEY_ID }}
-            - name: AWS_SECRET_ACCESS_KEY
-              value: {{ .Values.AWS_SECRET_ACCESS_KEY }}
-            - name: AWS_DEFAULT_REGION
-              value: {{ .Values.AWS_DEFAULT_REGION }}
           args:
             - -conf=/data/config.yaml
           volumeMounts:

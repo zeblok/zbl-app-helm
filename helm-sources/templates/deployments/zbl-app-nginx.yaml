@@ -27,5 +27,4 @@ spec:
         - name: {{ .Values.zblappnginx.cname }}
           image: "{{ .Values.zblappnginx.image.repository }}:{{ .Values.zblappnginx.image.tag }}"
           imagePullPolicy: Always
-      imagePullSecrets:
-      - name: {{ .Values.zblappauth.imagePullSecrets }}
+      

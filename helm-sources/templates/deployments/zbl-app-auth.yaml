@@ -32,5 +32,4 @@ spec:
               value: {{ .Values.backendUrl }}
             - name: bugsnagKey
               value: {{ .Values.bugsnagKey }}
-      imagePullSecrets:
-      - name: {{ .Values.privateaccesssecret.name }}
+ 
