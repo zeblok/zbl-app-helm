@@ -304,10 +304,10 @@ zblkubeconfig:
   cname: event-exporter
   
   image:
-    repository: ghcr.io/opsgenie/kubernetes-event-exporter
+    repository: ghcr.io/resmoio/kubernetes-event-exporter
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: v0.10
+    tag: v1.0
   
   persistentVolume:
     ## If true, zbl will create/use a Persistent Volume Claim
