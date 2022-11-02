@@ -54,7 +54,7 @@ zblapp:
     repository: zeblok/comp-app-jpmc
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: v1.2.0_prod_minikube
+    tag: v1.2.3
 
   imagePullSecrets: []
   nameOverride: ""
@@ -140,7 +140,7 @@ zblappauth:
     repository: zeblok/comp-auth
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: v1.2.0_prod_minikube
+    tag: v1.2.3
   
   imagePullSecrets: hubcred
   nameOverride: ""
@@ -239,7 +239,7 @@ zblappnginx:
     repository: zeblok/nginx-zbl
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: alpine
+    tag: v1.2.3
   
   imagePullSecrets: hubcred
   nameOverride: ""
@@ -337,7 +337,7 @@ zbldatalake:
     repository: zeblok/minio
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: v1.2.0_prod_minikube
+    tag: v1.2.3
   miniorootuser: admin
   miniorootpassword: 306cab3e-adc7-49a0-89fb-0735aa7ffd14
   mountPath: /mnt

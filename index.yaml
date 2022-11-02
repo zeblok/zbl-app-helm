@@ -3,7 +3,17 @@ entries:
   zbl-app:
   - apiVersion: v2
     appVersion: 1.16.1
-    created: "2022-10-27T15:42:19.2796924+05:30"
+    created: "2022-11-02T11:21:54.330102367Z"
+    description: A Helm chart for Zbl-App
+    digest: 6860ebc5341b42e3dbbdf570f8209a826bea70d6d20c73a6d4655b654dc66220
+    name: zbl-app
+    type: application
+    urls:
+    - https://zeblok.github.io/zbl-app-helm/zbl-app-1.2.3.tgz
+    version: 1.2.3
+  - apiVersion: v2
+    appVersion: 1.16.1
+    created: "2022-11-02T11:21:54.328808161Z"
     description: A Helm chart for Zbl-App
     digest: 991feb2fb87dcd04fec4d61dccca23813c6fdc77a3538de071fbb6abb7bf3644
     name: zbl-app
@@ -13,7 +23,7 @@ entries:
     version: 1.2.2
   - apiVersion: v2
     appVersion: 1.16.1
-    created: "2022-10-27T15:42:19.2780145+05:30"
+    created: "2022-11-02T11:21:54.327623177Z"
     description: A Helm chart for Zbl-App
     digest: 35a86a9db616e958b51a2f85f09f969fcb30100f09a62ddce372c18309362156
     name: zbl-app
@@ -23,7 +33,7 @@ entries:
     version: 1.2.1
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-10-27T15:42:19.2719697+05:30"
+    created: "2022-11-02T11:21:54.326454231Z"
     description: A Helm chart for Zbl-App
     digest: 5be0af69c0df3fa440729f46d4089c7fdc3fab451b30716818a24705c16debc5
     name: zbl-app
@@ -31,4 +41,4 @@ entries:
     urls:
     - https://zeblok.github.io/zbl-app-helm/zbl-app-1.2.0.tgz
     version: 1.2.0
-generated: "2022-10-27T15:42:19.2482252+05:30"
+generated: "2022-11-02T11:21:54.325022368Z"
