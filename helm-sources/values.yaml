@@ -91,10 +91,10 @@ zblappmongo:
   cname: mongo-container
   
   image:
-    repository: mongo
+    repository: zeblok/zeblok-mongo
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: 4.2-rc
+    tag: v1.2.3
   
   imagePullSecrets: []
   nameOverride: ""
@@ -169,10 +169,10 @@ zblappredis:
   cname: zbl-auth-container
   
   image:
-    repository: redis
+    repository: zeblok/zeblok-redis
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: 7.0.4-alpine
+    tag: v1.2.3
   
   imagePullSecrets: []
   nameOverride: ""
@@ -202,10 +202,10 @@ zblapprabbitmq:
   cname: rabbitmq-container
 
   image:
-    repository: rabbitmq
+    repository: zeblok/zeblok-rabbitmq
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: 3.9.22-alpine
+    tag: v1.2.3
 
   imagePullSecrets: []
   nameOverride: ""
@@ -304,10 +304,10 @@ zblkubeconfig:
   cname: event-exporter
   
   image:
-    repository: ghcr.io/resmoio/kubernetes-event-exporter
+    repository: zeblok/kubernetes-event-expoter
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: v1.0
+    tag: v1.2.3
   
   persistentVolume:
     ## If true, zbl will create/use a Persistent Volume Claim

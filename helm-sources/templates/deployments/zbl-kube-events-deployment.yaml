@@ -17,7 +17,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ .Values.zblkubeconfig.serviceAccountName }}
+      serviceAccountName: {{ .Values.zblkubeconfig.serviceaccountname }}
       containers:
         - name: {{ .Values.zblkubeconfig.cname }}
           image: "{{ .Values.zblkubeconfig.image.repository }}:{{ .Values.zblkubeconfig.image.tag }}"
